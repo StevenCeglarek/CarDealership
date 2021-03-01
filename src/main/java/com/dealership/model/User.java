@@ -8,35 +8,10 @@ public class User {
     private String password;
     private String phoneNumber;
     private String email;
-    private String employeeNumber;
     private boolean isEmployee;
     private boolean isCustomer;
-    private String offer;
-    private List<Object> carsOwned;
-    private String payments;
 
-    public User() {
-
-    }
-
-    public User(boolean isEmployee, boolean isCustomer
-            , String offer, List<Object> carsOwned, String payments) {
-        this.isEmployee = isEmployee;
-        this.isCustomer = isCustomer;
-        this.offer = offer;
-        this.carsOwned = carsOwned;
-        this.payments = payments;
-    }
-
-    public User(boolean isEmployee, boolean isCustomer
-            , String offer, List<Object> carsOwned, String payments, String employeeNumber) {
-        this.isEmployee = isEmployee;
-        this.isCustomer = isCustomer;
-        this.offer = offer;
-        this.carsOwned = carsOwned;
-        this.payments = payments;
-        this.employeeNumber = employeeNumber;
-    }
+    public User() {}
 
     public User(String username, String password, String phoneNumber, String email) {
         this.username = username;
@@ -77,14 +52,6 @@ public class User {
         this.email = email;
     }
 
-    public String getEmployeeNumber() {
-        return employeeNumber;
-    }
-
-    public void setEmployeeNumber(String employeeNumber) {
-        this.employeeNumber = employeeNumber;
-    }
-
     public boolean isEmployee() {
         return isEmployee;
     }
@@ -101,27 +68,4 @@ public class User {
         isCustomer = customer;
     }
 
-    public String getOffer() {
-        return offer;
-    }
-
-    public void setOffer(String offer) {
-        this.offer = offer;
-    }
-
-    public List<Object> getCarsOwned() {
-        return carsOwned;
-    }
-
-    public void setCarsOwned(List<Object> carsOwned) {
-        this.carsOwned = carsOwned;
-    }
-
-    public String getPayments() {
-        return payments;
-    }
-
-    public void setPayments(String payments) {
-        this.payments = payments;
-    }
 }
