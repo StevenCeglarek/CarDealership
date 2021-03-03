@@ -4,26 +4,15 @@ import java.util.ArrayList;
 
 public class Customer extends User{
 
-    private User u;
     private ArrayList<Car> carsOwned;
     private ArrayList<String> offers;
-    private String payments;
+    private Double payments;
 
-    public Customer(User u, ArrayList<Car> carsOwned, ArrayList<String> offers) {
-        this.u = u;
-        this.carsOwned = carsOwned;
-        this.offers = offers;
+    public Customer(String username, String password, String email, String phoneNumber) {
+        super(username, password, email, phoneNumber);
     }
 
     public Customer() {}
-
-    public User getU() {
-        return u;
-    }
-
-    public void setU(User u) {
-        this.u = u;
-    }
 
     public ArrayList<Car> getCarsOwned() {
         return carsOwned;
@@ -41,11 +30,11 @@ public class Customer extends User{
         this.offers = offers;
     }
 
-    public String getPayments() {
+    public Double getPayments() {
         return payments;
     }
 
-    public void setPayments(String payments) {
+    public void setPayments(Double payments) {
         this.payments = payments;
     }
 }

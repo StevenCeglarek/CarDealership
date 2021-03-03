@@ -1,51 +1,81 @@
 package com.dealership.services;
 
+import com.dealership.dao.UserDaoImpl;
+import com.dealership.model.Customer;
+import com.dealership.model.Employee;
 import com.dealership.model.User;
+import com.dealership.util.DealershipArrayList;
+import com.dealership.util.DealershipList;
 
 import java.util.ArrayList;
 
 public class UserService {
 
-    public static ArrayList<User> users = new ArrayList<User>();
-    private static int currentIndex = 0;
+    public static DealershipArrayList<Employee> employeeList = new DealershipArrayList<Employee>();
+    public static DealershipArrayList<Customer> customerList = new DealershipArrayList<Customer>();
+    private static int currentIndexEmployee = 0;
+    private static int currentIndexCustomer = 0;
+    UserDaoImpl u = new UserDaoImpl();
 
-    public boolean doesUsernameExist(String username){
+    public boolean doesUsernameExistEmployee(String username){
         // O(n) time complexity O(1) space complexity
-        return findUserByUsername(username) != null;
+        return findUserByUsernameEmployee(username) != null;
     }
 
-    public User findUserByUsername(String username){
+    public User findUserByUsernameEmployee(String username){
         // O(n) time complexity O(1) space complexity
-        if(currentIndex > 0) {
-            for (int i = 0; i <= currentIndex; i++) {
-                if (users.get(i).getUsername().equals(username)) {
-                    return users.get(i);
+        if(currentIndexEmployee > 0) {
+            for (int i = 0; i < currentIndexEmployee; i++) {
+                User thisUser = (User) employeeList.get(i);
+                if (thisUser.getUsername().equals(username)) {
+                    return (User) employeeList.get(i);
                 }
             }
         }
         return null;
     }
 
-    public boolean registerEmployeeOrCustomer(String passcode, String username) {
-        User us = findUserByUsername(username);
-        if (passcode.equals("12345")) {
-            us.setEmployee(true);
-        } else if (passcode.equals("11111")) {
-            us.setCustomer(true);
+    public boolean doesUsernameExistCustomer(String username){
+        // O(n) time complexity O(1) space complexity
+        return findUserByUsernameCustomer(username) != null;
+    }
+
+    public User findUserByUsernameCustomer(String username){
+        // O(n) time complexity O(1) space complexity
+
+        if(currentIndexCustomer > 0) {
+            for (int i = 0; i < currentIndexCustomer; i++) {
+                User thisUser = (User) customerList.get(i);
+                if (thisUser.getUsername().equals(username)) {
+                    return (User) customerList.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean makeUserEmployee(String username, String password, String email,
+                            String phoneNumber) {
+        if(!doesUsernameExistEmployee(username)){
+            employeeList.addUser(new Employee(username, password, phoneNumber, email));
+            User newEmp = (User) employeeList.get(currentIndexEmployee);
+            u.addUser(newEmp);
+            currentIndexEmployee++;
+            return true;
         } else {
-            System.out.println("Incorrect Passcode, please try again.");
+            System.out.println("Employee already exists");
         }
         return false;
     }
 
-    public boolean makeUser(String username, String password, String email,
+    public boolean makeUserCustomer(String username, String password, String email,
                             String phoneNumber) {
-        if(!doesUsernameExist(username)){
-            users.add(new User(username, password, phoneNumber, email));
-            currentIndex++;
+        if(!doesUsernameExistCustomer(username)){
+            customerList.addUser(new Customer(username, password, phoneNumber, email));
+            currentIndexCustomer++;
             return true;
         } else {
-            System.out.println("user already exists");
+            System.out.println("Customer already exists");
         }
         return false;
     }

@@ -1,13 +1,11 @@
 package com.dealership.ui;
 
-import com.dealership.model.User;
 import com.dealership.services.UserService;
 
 import java.util.Scanner;
 
-public class RegisterMenu extends AbstractMenu{
+public class RegisterMenu extends AbstractMenu {
 
-    @Override
     public void displayMenu(Scanner scan) {
 
         UserService us = new UserService();
@@ -18,7 +16,7 @@ public class RegisterMenu extends AbstractMenu{
         do{
             System.out.println("provide username");
             username = scan.nextLine();
-        } while(us.doesUsernameExist(username));
+        } while(us.doesUsernameExistEmployee(username) || us.doesUsernameExistCustomer(username));
         System.out.println("provide password");
         // TODO: check phone number
         String password = scan.nextLine();
@@ -27,23 +25,40 @@ public class RegisterMenu extends AbstractMenu{
         String phoneNumber = scan.nextLine();
         System.out.println("provide email");
         String email = scan.nextLine();
-        System.out.println(us.makeUser(username, password, phoneNumber, email) ?
-                "successfully made "+username :
-                "cancelled registration");
+        System.out.println("Are you registering as an Employee or a Customer? 1. Employee 2. Customer");
+        boolean continueLoop = true;
+        do {
+            String EC = scan.nextLine();
+            if(EC.equals("1")) {
+                System.out.println("Congratulations, you are now registered as an Employee.");
+                System.out.println(us.makeUserEmployee(username, password, phoneNumber, email) ?
+                        "Successfully made employee "+username :
+                        "cancelled registration");
+                continueLoop = false;
+            } else if (EC.equals("2")) {
+                System.out.println("Congratulations, you are now registered as an Customer.");
+                System.out.println(us.makeUserCustomer(username, password, phoneNumber, email) ?
+                        "Successfully made customer "+username :
+                        "cancelled registration");
+                continueLoop = false;
+            } else {
+                System.out.println("Sorry, you entered the wrong command, please try again");
+            }
+        } while (continueLoop);
 
         }
 
-    public void registerEmployeeOrCustomer(User u, Scanner scan) {
-        UserService us = new UserService();
-        System.out.println("Are you registering an Employee or a Customer?");
-        String answer = scan.nextLine();
-        if (answer.equalsIgnoreCase("employee")) {
-            System.out.println("Please enter the employee passcode to register as an employee.");
-            answer = scan.nextLine();
-            us.registerEmployeeOrCustomer(answer, u.getUsername());
-        }
-
-    }
+//    public void registerEmployeeOrCustomer(User u, Scanner scan) {
+//        UserService us = new UserService();
+//        System.out.println("Are you registering as an Employee or a Customer?");
+//        String answer = scan.nextLine();
+//        if (answer.equalsIgnoreCase("employee")) {
+//            System.out.println("Please enter the employee passcode to register as an employee.");
+//            answer = scan.nextLine();
+//            us.registerEmployeeOrCustomer(answer, u.getUsername());
+//        }
+//
+//    }
 
 
 }

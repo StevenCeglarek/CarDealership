@@ -1,31 +1,29 @@
 package com.dealership.util;
 
-public class DealershipCollection {
+public abstract class DealershipCollection<T> {
 
-    public abstract class GymCollection<T> {
+    /**
+     * Optional size number for non expandable subclasses
+     */
+    protected int maxSize;
 
-        /**
-         * Optional size number for non expandable subclasses
-         */
-        protected int maxSize;
+    public abstract T get(T c);
 
-        public abstract T get(T o);
+    public abstract void addCar(T t);
 
-        public abstract void add(T u) throws Exception;
+    public abstract void addUser(T t);
 
-        public abstract int size();
+    public abstract int size();
 
-        public abstract void remove(T o);
+    public abstract void removeUser(T t);
 
-        public abstract T next();
+    public abstract void removeCar(T t);
 
-        public abstract T previous();
+//    public abstract String toString();
 
-        public abstract String toString();
+    abstract boolean isEmpty();
 
-        abstract boolean isEmpty();
+    protected abstract void clear();
 
-        protected abstract void clear();
-
-    }
 }
+

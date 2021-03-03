@@ -11,6 +11,12 @@ public class Car {
 
     public Car() {}
 
+    public Car(String make, String year, Double price) {
+        this.make = make;
+        this.year = year;
+        this.price = price;
+    }
+
     public String getMake() {
         return make;
     }
@@ -41,5 +47,9 @@ public class Car {
 
     public void setPayments(ArrayList<String> payments) {
         this.payments = payments;
+    }
+
+    public String toString() {
+        return "Make and Model: " + getMake() + " Year: " + getYear() + " Price: " + getPrice();
     }
 }

@@ -8,8 +8,8 @@ public class User {
     private String password;
     private String phoneNumber;
     private String email;
-    private boolean isEmployee;
-    private boolean isCustomer;
+//    private boolean isEmployee;
+//    private boolean isCustomer;
 
     public User() {}
 
@@ -21,51 +21,64 @@ public class User {
     }
 
     public String getUsername() {
+
         return username;
     }
 
     public void setUsername(String username) {
+
         this.username = username;
     }
 
     public String getPassword() {
+
         return password;
     }
 
     public void setPassword(String password) {
+
         this.password = password;
     }
 
     public String getPhoneNumber() {
+
         return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
+
         this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
+
         return email;
     }
 
     public void setEmail(String email) {
+
         this.email = email;
     }
 
-    public boolean isEmployee() {
-        return isEmployee;
+    public String toString() {
+        return "Username: " + getUsername() + " Password: " + getPassword() +
+                " Email: " + getEmail() + " Phone Number: " +getPhoneNumber();
     }
 
-    public void setEmployee(boolean employee) {
-        isEmployee = employee;
-    }
-
-    public boolean isCustomer() {
-        return isCustomer;
-    }
-
-    public void setCustomer(boolean customer) {
-        isCustomer = customer;
-    }
+//    public boolean isEmployee() {
+//        return isEmployee;
+//    }
+//
+//    public void setEmployee(boolean employee) {
+//        isEmployee = employee;
+//    }
+//
+//    public boolean isCustomer() {
+//        return isCustomer;
+//    }
+//
+//    public void setCustomer(boolean customer) {
+//        isCustomer = customer;
+//    }
 
 }
