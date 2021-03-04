@@ -1,11 +1,12 @@
 package com.dealership.model;
 
-import java.util.ArrayList;
+import com.dealership.util.DealershipArrayList;
+
 
 public class Customer extends User{
 
-    private ArrayList<Car> carsOwned;
-    private ArrayList<String> offers;
+    private DealershipArrayList<Car> carsOwned;
+    private String offers;
     private Double payments;
 
     public Customer(String username, String password, String email, String phoneNumber) {
@@ -14,19 +15,19 @@ public class Customer extends User{
 
     public Customer() {}
 
-    public ArrayList<Car> getCarsOwned() {
+    public DealershipArrayList<Car> getCarsOwned() {
         return carsOwned;
     }
 
-    public void setCarsOwned(ArrayList<Car> carsOwned) {
+    public void setCarsOwned(DealershipArrayList<Car> carsOwned) {
         this.carsOwned = carsOwned;
     }
 
-    public ArrayList<String> getOffers() {
+    public String getOffers() {
         return offers;
     }
 
-    public void setOffers(ArrayList<String> offers) {
+    public void setOffers(String offers) {
         this.offers = offers;
     }
 

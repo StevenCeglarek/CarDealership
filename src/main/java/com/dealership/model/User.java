@@ -8,8 +8,6 @@ public class User {
     private String password;
     private String phoneNumber;
     private String email;
-//    private boolean isEmployee;
-//    private boolean isCustomer;
 
     public User() {}
 
@@ -64,21 +62,5 @@ public class User {
         return "Username: " + getUsername() + " Password: " + getPassword() +
                 " Email: " + getEmail() + " Phone Number: " +getPhoneNumber();
     }
-
-//    public boolean isEmployee() {
-//        return isEmployee;
-//    }
-//
-//    public void setEmployee(boolean employee) {
-//        isEmployee = employee;
-//    }
-//
-//    public boolean isCustomer() {
-//        return isCustomer;
-//    }
-//
-//    public void setCustomer(boolean customer) {
-//        isCustomer = customer;
-//    }
 
 }

@@ -1,5 +1,6 @@
 package com.dealership;
 
+import com.dealership.dao.UserDaoImpl;
 import com.dealership.model.Car;
 import com.dealership.model.Employee;
 import com.dealership.model.User;
@@ -15,22 +16,25 @@ public class Driver {
 
     public static void main(String[] args) {
 
-        RegisterMenu rm = new RegisterMenu();
-        LoginMenu lm = new LoginMenu();
-        Scanner scan = new Scanner(System.in);
-        boolean continueLoop = true;
-        do {
-            System.out.println("Welcome to the car Dealership, Would you like to sign up, login or exit?");
-            String answer = scan.nextLine();
-            if(answer.equalsIgnoreCase("exit")){
-                continueLoop = false;
-            } else if(answer.equalsIgnoreCase("sign up")) {
-                rm.displayMenu(scan);
-            } else if(answer.equalsIgnoreCase("login")) {
-                lm.displayMenu(scan);
-            }
-        } while(continueLoop);
+//        RegisterMenu rm = new RegisterMenu();
+//        LoginMenu lm = new LoginMenu();
+//        Scanner scan = new Scanner(System.in);
+//        boolean continueLoop = true;
+//        do {
+//            System.out.println("Welcome to the car Dealership, Would you like to sign up, login or exit?");
+//            String answer = scan.nextLine();
+//            if(answer.equalsIgnoreCase("exit")){
+//                continueLoop = false;
+//            } else if(answer.equalsIgnoreCase("sign up")) {
+//                rm.displayMenu(scan);
+//            } else if(answer.equalsIgnoreCase("login")) {
+//                lm.displayMenu(scan);
+//            }
+//        } while(continueLoop);
+//
+        UserDaoImpl usd = new UserDaoImpl();
 
+        System.out.println(usd.getAllEmployees().get(1));
 
 //        DealershipArrayList<Car> carList = new DealershipArrayList<>();
 //        carList.addCar(new Car("Honda Civic", "2021", 30000.00));

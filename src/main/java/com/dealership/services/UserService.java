@@ -5,9 +5,6 @@ import com.dealership.model.Customer;
 import com.dealership.model.Employee;
 import com.dealership.model.User;
 import com.dealership.util.DealershipArrayList;
-import com.dealership.util.DealershipList;
-
-import java.util.ArrayList;
 
 public class UserService {
 
@@ -58,8 +55,8 @@ public class UserService {
                             String phoneNumber) {
         if(!doesUsernameExistEmployee(username)){
             employeeList.addUser(new Employee(username, password, phoneNumber, email));
-            User newEmp = (User) employeeList.get(currentIndexEmployee);
-            u.addUser(newEmp);
+            Employee newEmp = (Employee) employeeList.get(currentIndexEmployee);
+            u.addEmployee(newEmp);
             currentIndexEmployee++;
             return true;
         } else {
@@ -72,6 +69,8 @@ public class UserService {
                             String phoneNumber) {
         if(!doesUsernameExistCustomer(username)){
             customerList.addUser(new Customer(username, password, phoneNumber, email));
+            Customer newCust = (Customer) customerList.get(currentIndexCustomer);
+            u.addCustomer(newCust);
             currentIndexCustomer++;
             return true;
         } else {

@@ -9,6 +9,8 @@ public abstract class DealershipCollection<T> {
 
     public abstract T get(T c);
 
+    public abstract T get(int i);
+
     public abstract void addCar(T t);
 
     public abstract void addUser(T t);

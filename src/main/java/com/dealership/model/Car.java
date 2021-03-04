@@ -4,25 +4,25 @@ import java.util.ArrayList;
 
 public class Car {
 
-    private String make;
+    private String makeAndModel;
     private String year;
     private Double price;
     private ArrayList<String> payments;
 
     public Car() {}
 
-    public Car(String make, String year, Double price) {
-        this.make = make;
+    public Car(String makeAndModel, String year, Double price) {
+        this.makeAndModel = makeAndModel;
         this.year = year;
         this.price = price;
     }
 
-    public String getMake() {
-        return make;
+    public String getMakeAndModel() {
+        return makeAndModel;
     }
 
-    public void setMake(String make) {
-        this.make = make;
+    public void setMakeAndModel(String makeAndModel) {
+        this.makeAndModel = makeAndModel;
     }
 
     public String getYear() {
@@ -50,6 +50,6 @@ public class Car {
     }
 
     public String toString() {
-        return "Make and Model: " + getMake() + " Year: " + getYear() + " Price: " + getPrice();
+        return "Make and Model: " + getMakeAndModel() + " Year: " + getYear() + " Price: " + getPrice();
     }
 }

@@ -21,7 +21,7 @@ public class DealershipArrayList<T> extends DealershipList<T> {
         this.array1 = array1;
     }
 
-    public Object get(int i) {
+    public T get(int i) {
         return array[i];
     }
 

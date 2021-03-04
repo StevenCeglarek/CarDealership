@@ -7,8 +7,9 @@ import java.sql.SQLException;
 public class DAOUtilities {
 
     private static final String CONNECTION_USERNAME = "postgres";
-    private static final String CONNECTION_PASSWORD = "password";
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
+    private static final String CONNECTION_PASSWORD = "password123";
+    private static final String URL =
+            "jdbc:postgresql://cardealership.cltilemkbrbk.us-east-2.rds.amazonaws.com:5432/postgres?currentSchema=cardealership";
     private static Connection connection;
 
     public static UserDao getUserDao() {
