@@ -13,28 +13,28 @@ import java.util.Scanner;
 
 public class Driver {
 
+    public static final Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
 
-//        RegisterMenu rm = new RegisterMenu();
-//        LoginMenu lm = new LoginMenu();
-//        Scanner scan = new Scanner(System.in);
-//        boolean continueLoop = true;
-//        do {
-//            System.out.println("Welcome to the car Dealership, Would you like to sign up, login or exit?");
-//            String answer = scan.nextLine();
-//            if(answer.equalsIgnoreCase("exit")){
-//                continueLoop = false;
-//            } else if(answer.equalsIgnoreCase("sign up")) {
-//                rm.displayMenu(scan);
-//            } else if(answer.equalsIgnoreCase("login")) {
-//                lm.displayMenu(scan);
-//            }
-//        } while(continueLoop);
-//
-        UserDaoImpl usd = new UserDaoImpl();
+        RegisterMenu rm = new RegisterMenu();
+        LoginMenu lm = new LoginMenu();
+        boolean continueLoop = true;
+        do {
+            System.out.println("Welcome to the car Dealership, Would you like to sign up, login or exit?");
+            String answer = scan.nextLine();
+            if(answer.equalsIgnoreCase("exit")){
+                continueLoop = false;
+            } else if(answer.equalsIgnoreCase("sign up")) {
+                rm.displayMenu(scan);
+            } else if(answer.equalsIgnoreCase("login")) {
+                lm.displayMenu(scan);
+            }
+        } while(continueLoop);
 
-        System.out.println(usd.getAllEmployees().get(1));
+//        UserDaoImpl usd = new UserDaoImpl();
+//
+//        System.out.println(usd.getAllEmployees().toString());
 
 //        DealershipArrayList<Car> carList = new DealershipArrayList<>();
 //        carList.addCar(new Car("Honda Civic", "2021", 30000.00));

@@ -19,17 +19,14 @@ public class UserService {
         return findUserByUsernameEmployee(username) != null;
     }
 
-    public User findUserByUsernameEmployee(String username){
+    public Employee findUserByUsernameEmployee(String username){
         // O(n) time complexity O(1) space complexity
-        if(currentIndexEmployee > 0) {
-            for (int i = 0; i < currentIndexEmployee; i++) {
-                User thisUser = (User) employeeList.get(i);
-                if (thisUser.getUsername().equals(username)) {
-                    return (User) employeeList.get(i);
-                }
-            }
+        Employee thisEmp = u.findEmployeeByUsername(username);
+        if (thisEmp == null) {
+            return null;
+        } else {
+            return thisEmp;
         }
-        return null;
     }
 
     public boolean doesUsernameExistCustomer(String username){
@@ -37,18 +34,15 @@ public class UserService {
         return findUserByUsernameCustomer(username) != null;
     }
 
-    public User findUserByUsernameCustomer(String username){
+    public Customer findUserByUsernameCustomer(String username){
         // O(n) time complexity O(1) space complexity
 
-        if(currentIndexCustomer > 0) {
-            for (int i = 0; i < currentIndexCustomer; i++) {
-                User thisUser = (User) customerList.get(i);
-                if (thisUser.getUsername().equals(username)) {
-                    return (User) customerList.get(i);
-                }
-            }
+        Customer thisCust = u.findCustomerByUsername(username);
+        if (thisCust == null) {
+            return null;
+        } else {
+            return thisCust;
         }
-        return null;
     }
 
     public boolean makeUserEmployee(String username, String password, String email,

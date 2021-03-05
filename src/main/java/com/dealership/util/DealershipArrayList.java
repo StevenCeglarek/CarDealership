@@ -121,4 +121,21 @@ public class DealershipArrayList<T> extends DealershipList<T> {
         }
         return -1;
     }
+
+    public String toString() {
+        String[] strings = getStringArray();
+        String result = "";
+        for (String s : strings) {
+            result = result.concat(s + System.lineSeparator());
+        }
+        return result;
+    }
+
+    public String[] getStringArray(){
+        String[] result = new String[array.length];
+        for (int i = 0; i < array.length; i++){
+            result[i] = array[i].toString();
+        }
+        return result;
+    }
 }

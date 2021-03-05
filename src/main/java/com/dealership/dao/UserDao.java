@@ -8,8 +8,13 @@ import com.dealership.util.DealershipList;
 
 public interface UserDao {
 
-    public boolean addEmployee(Employee user);
-    public boolean addCustomer(Customer user);
+    public boolean addEmployee(Employee employee);
+    public boolean addCustomer(Customer customer);
     public boolean updateUser(User user);
+    public Employee findEmployeeByUsername(String username);
+    public Customer findCustomerByUsername(String username);
+    public Customer findCustomerById(Customer customer);
+    public Customer findEmployeeById(Employee employee);
     public DealershipList<Employee> getAllEmployees();
+    public DealershipList<Customer> getAllCustomers();
 }

@@ -71,30 +71,92 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
+    public Employee findEmployeeByUsername(String username) {
+        Employee employee = null;
+        try {
+            connection = DAOUtilities.getConnection();
+            String sql = "SELECT * FROM employees WHERE username LIKE ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, "%" + username + "%");
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                employee = new Employee();
+
+                employee.setUsername(rs.getString("username"));
+                employee.setPassword(rs.getString("password"));
+                employee.setPhoneNumber(rs.getString("phoneNumber"));
+                employee.setEmail(rs.getString("email"));
+                employee.setEmployee(rs.getBoolean("isEmployee"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            closeResources();
+        }
+        return employee;
+    }
+
+    @Override
+    public Customer findCustomerByUsername(String username) {
+        Customer customer = null;
+        try {
+            connection = DAOUtilities.getConnection();
+            String sql = "SELECT * FROM customers WHERE username LIKE ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, "%" + username + "%");
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                customer = new Customer();
+
+                customer.setUsername(rs.getString("username"));
+                customer.setPassword(rs.getString("password"));
+                customer.setPhoneNumber(rs.getString("phoneNumber"));
+                customer.setEmail(rs.getString("email"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            closeResources();
+        }
+        return customer;
+    }
+
+    @Override
+    public Customer findCustomerById(Customer customer) {
+        return null;
+    }
+
+    @Override
+    public Customer findEmployeeById(Employee employee) {
+        return null;
+    }
+
+    @Override
     public DealershipList<Employee> getAllEmployees() {
         DealershipList<Employee> employees = new DealershipArrayList<>();
 
         try {
-            connection = DAOUtilities.getConnection();	// Get our database connection from the manager
-            String sql = "SELECT * FROM employees";			// Our SQL query
-            stmt = connection.prepareStatement(sql);	// Creates the prepared statement from the query
+            connection = DAOUtilities.getConnection();
+            String sql = "SELECT * FROM employees";
+            stmt = connection.prepareStatement(sql);
 
-            ResultSet rs = stmt.executeQuery();			// Queries the database
+            ResultSet rs = stmt.executeQuery();
 
-            // So long as the ResultSet actually contains results...
+
             while (rs.next()) {
-                // We need to populate a Book object with info for each row from our query result
+
                 Employee employee = new Employee();
 
-                // Each variable in our Book object maps to a column in a row from our results.
-//                Integer id = rs.getInt("employeeId");
                 employee.setUsername(rs.getString("username"));
                 employee.setPassword(rs.getString("password"));
                 employee.setPhoneNumber(rs.getString("phoneNumber"));
                 employee.setEmail(rs.getString("email"));
                 employee.setEmployee(rs.getBoolean("isEmployee"));
 
-                // Finally we add it to the list of Book objects returned by this query.
                 employees.addUser(employee);
 
             }
@@ -104,13 +166,37 @@ public class UserDaoImpl implements UserDao{
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // We need to make sure our statements and connections are closed,
-            // or else we could wind up with a memory leak
             closeResources();
         }
-
-        // return the list of Book objects populated by the DB.
         return employees;
+    }
+
+    public DealershipList<Customer> getAllCustomers() {
+        DealershipList<Customer> customers = new DealershipArrayList<>();
+
+        try {
+            connection = DAOUtilities.getConnection();
+            String sql = "SELECT * FROM employees";
+            stmt = connection.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                Customer customer = new Customer();
+                customer.setUsername(rs.getString("username"));
+                customer.setPassword(rs.getString("password"));
+                customer.setPhoneNumber(rs.getString("phoneNumber"));
+                customer.setEmail(rs.getString("email"));
+                customers.addUser(customer);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+        return customers;
     }
 
     private void closeResources() {
@@ -121,7 +207,6 @@ public class UserDaoImpl implements UserDao{
             System.out.println("Could not close statement!");
             e.printStackTrace();
         }
-
         try {
             if (connection != null)
                 connection.close();
@@ -130,4 +215,6 @@ public class UserDaoImpl implements UserDao{
             e.printStackTrace();
         }
     }
+
+
 }

@@ -12,7 +12,6 @@ public class RegisterMenu extends AbstractMenu {
 
         System.out.println("Welcome to the Car Dealership Register Menu");
         String username = "";
-        // hey something is wrong
         do{
             System.out.println("provide username");
             username = scan.nextLine();
@@ -48,17 +47,6 @@ public class RegisterMenu extends AbstractMenu {
 
         }
 
-//    public void registerEmployeeOrCustomer(User u, Scanner scan) {
-//        UserService us = new UserService();
-//        System.out.println("Are you registering as an Employee or a Customer?");
-//        String answer = scan.nextLine();
-//        if (answer.equalsIgnoreCase("employee")) {
-//            System.out.println("Please enter the employee passcode to register as an employee.");
-//            answer = scan.nextLine();
-//            us.registerEmployeeOrCustomer(answer, u.getUsername());
-//        }
-//
-//    }
 
 
 }
