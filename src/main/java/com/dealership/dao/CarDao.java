@@ -1,14 +1,13 @@
 package com.dealership.dao;
 
 import com.dealership.model.Car;
-import com.dealership.util.DealershipList;
+import com.dealership.util.DealershipArrayList;
 
 public interface CarDao {
 
     public boolean addCar(Car car);
-    public Car findCarByName();
     public boolean removeCar();
-    public DealershipList<Car> getAllCars();
+    public DealershipArrayList<Car> getAllCars();
     public Car findCarByCustomerId();
     public Car findByMakeAndModel(String makeAndModel);
 }

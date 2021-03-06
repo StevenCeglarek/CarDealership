@@ -8,6 +8,7 @@ public class Customer extends User{
     private DealershipArrayList<Car> carsOwned;
     private String offers;
     private Double payments;
+    private int customerId;
 
     public Customer(String username, String password, String email, String phoneNumber) {
         super(username, password, email, phoneNumber);
@@ -37,5 +38,13 @@ public class Customer extends User{
 
     public void setPayments(Double payments) {
         this.payments = payments;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 }

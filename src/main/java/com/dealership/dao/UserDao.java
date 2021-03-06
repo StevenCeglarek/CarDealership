@@ -15,6 +15,6 @@ public interface UserDao {
     public Customer findCustomerByUsername(String username);
     public Customer findCustomerById(Customer customer);
     public Customer findEmployeeById(Employee employee);
-    public DealershipList<Employee> getAllEmployees();
-    public DealershipList<Customer> getAllCustomers();
+    public DealershipArrayList<Employee> getAllEmployees();
+    public DealershipArrayList<Customer> getAllCustomers();
 }

@@ -48,8 +48,8 @@ public class UserService {
     public boolean makeUserEmployee(String username, String password, String email,
                             String phoneNumber) {
         if(!doesUsernameExistEmployee(username)){
-            employeeList.addUser(new Employee(username, password, phoneNumber, email));
-            Employee newEmp = (Employee) employeeList.get(currentIndexEmployee);
+            employeeList.add(new Employee(username, password, phoneNumber, email));
+            Employee newEmp = employeeList.get(currentIndexEmployee);
             u.addEmployee(newEmp);
             currentIndexEmployee++;
             return true;
@@ -62,8 +62,8 @@ public class UserService {
     public boolean makeUserCustomer(String username, String password, String email,
                             String phoneNumber) {
         if(!doesUsernameExistCustomer(username)){
-            customerList.addUser(new Customer(username, password, phoneNumber, email));
-            Customer newCust = (Customer) customerList.get(currentIndexCustomer);
+            customerList.add(new Customer(username, password, phoneNumber, email));
+            Customer newCust = customerList.get(currentIndexCustomer);
             u.addCustomer(newCust);
             currentIndexCustomer++;
             return true;

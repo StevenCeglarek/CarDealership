@@ -7,6 +7,7 @@ public class Car {
     private String makeAndModel;
     private String year;
     private Double price;
+    private int carId;
     private ArrayList<String> payments;
 
     public Car() {}
@@ -39,6 +40,14 @@ public class Car {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public int getCarId() {
+        return carId;
+    }
+
+    public void setCarId(int carId) {
+        this.carId = carId;
     }
 
     public ArrayList<String> getPayments() {

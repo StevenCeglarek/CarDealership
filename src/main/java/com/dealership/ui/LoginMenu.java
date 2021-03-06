@@ -38,6 +38,8 @@ public class LoginMenu extends AbstractMenu{
                     System.out.println("Login Failed");
                 } else
                     System.out.println("You will now be redirected to the Customer Menu.");
+                    CustomerMenu cm = new CustomerMenu(cust);
+                    cm.displayMenu(scan);
                     continueLoop = false;
             } else {
                 System.out.println("Sorry, you entered the wrong command, please try again");

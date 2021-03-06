@@ -11,15 +11,9 @@ public abstract class DealershipCollection<T> {
 
     public abstract T get(int i);
 
-    public abstract void addCar(T t);
-
-    public abstract void addUser(T t);
-
     public abstract int size();
 
-    public abstract void removeUser(T t);
-
-    public abstract void removeCar(T t);
+    public abstract void remove(T t);
 
 //    public abstract String toString();
 

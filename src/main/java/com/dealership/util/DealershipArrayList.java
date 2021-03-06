@@ -9,16 +9,14 @@ public class DealershipArrayList<T> extends DealershipList<T> {
 
 //    ArrayList<Integer> arr;
     protected T[] array;
-    protected User[] array1;
     protected int currentIndex = 0;
 
     public DealershipArrayList() {
-        this.array = (T[]) new Car[]{};
+        this.array = (T[]) new Object[]{};
     }
 
-    public DealershipArrayList(T[] array, User[] array1) {
+    public DealershipArrayList(T[] array) {
         this.array = array;
-        this.array1 = array1;
     }
 
     public T get(int i) {
@@ -30,56 +28,21 @@ public class DealershipArrayList<T> extends DealershipList<T> {
         return null;
     }
 
-//    public void add(Car c){
-////        User[] newArray = new User[array.length + 1];
-//        Car[] newArray = new Car[array.length + 1];
-//        System.arraycopy(array, 0, newArray, 0, array.length);
-//        // add new element
-//        newArray[array.length] = c;
-//        array = newArray;
-//
-//    }
-    public void addCar(T t){
-        T[] newArray = (T[]) new Car[array.length + 1];
+    public void add(T t){
+        T[] newArray = (T[]) new Object[array.length + 1];
         System.arraycopy(array, 0, newArray, 0, array.length);
         // add new element
         newArray[array.length] = t;
         array = newArray;
-
-    }
-    public void addUser(T t){
-        T[] newArray = (T[]) new User[array.length + 1];
-        System.arraycopy(array, 0, newArray, 0, array.length);
-        // add new element
-        newArray[array.length] = t;
-        array = newArray;
-
     }
 
     public int size() {
         return array.length;
     }
 
-    public void removeUser(T t) {
+    public void remove(T t) {
         int index = indexOf(t);
-        T[] temp = (T[]) new User[array.length - 1];
-
-        for (int i = index; i < (array.length - 1); i++) {
-            array[i] = array[i + 1];
-        }
-
-        array[array.length - 1] = null;
-
-        for (int i = 0; i < temp.length; i++) {
-            temp[i] = array[i];
-        }
-
-        array = temp;
-    }
-
-    public void removeCar(T t) {
-        int index = indexOf(t);
-        T[] temp = (T[]) new Car[array.length - 1];
+        T[] temp = (T[]) new Object[array.length - 1];
 
         for (int i = index; i < (array.length - 1); i++) {
             array[i] = array[i + 1];
@@ -134,7 +97,7 @@ public class DealershipArrayList<T> extends DealershipList<T> {
     public String[] getStringArray(){
         String[] result = new String[array.length];
         for (int i = 0; i < array.length; i++){
-            result[i] = array[i].toString();
+            result[i] = i + "." + array[i].toString();
         }
         return result;
     }

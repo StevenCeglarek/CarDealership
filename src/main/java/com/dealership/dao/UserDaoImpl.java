@@ -111,6 +111,7 @@ public class UserDaoImpl implements UserDao{
             while (rs.next()) {
                 customer = new Customer();
 
+                customer.setCustomerId(rs.getInt("customerId"));
                 customer.setUsername(rs.getString("username"));
                 customer.setPassword(rs.getString("password"));
                 customer.setPhoneNumber(rs.getString("phoneNumber"));
@@ -136,8 +137,8 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public DealershipList<Employee> getAllEmployees() {
-        DealershipList<Employee> employees = new DealershipArrayList<>();
+    public DealershipArrayList<Employee> getAllEmployees() {
+        DealershipArrayList<Employee> employees = new DealershipArrayList<>();
 
         try {
             connection = DAOUtilities.getConnection();
@@ -157,7 +158,7 @@ public class UserDaoImpl implements UserDao{
                 employee.setEmail(rs.getString("email"));
                 employee.setEmployee(rs.getBoolean("isEmployee"));
 
-                employees.addUser(employee);
+                employees.add(employee);
 
             }
 
@@ -171,8 +172,8 @@ public class UserDaoImpl implements UserDao{
         return employees;
     }
 
-    public DealershipList<Customer> getAllCustomers() {
-        DealershipList<Customer> customers = new DealershipArrayList<>();
+    public DealershipArrayList<Customer> getAllCustomers() {
+        DealershipArrayList<Customer> customers = new DealershipArrayList<>();
 
         try {
             connection = DAOUtilities.getConnection();
@@ -188,7 +189,7 @@ public class UserDaoImpl implements UserDao{
                 customer.setPassword(rs.getString("password"));
                 customer.setPhoneNumber(rs.getString("phoneNumber"));
                 customer.setEmail(rs.getString("email"));
-                customers.addUser(customer);
+                customers.add(customer);
             }
             rs.close();
         } catch (SQLException e) {

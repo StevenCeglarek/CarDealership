@@ -1,6 +1,7 @@
 package com.dealership.dao;
 
 import com.dealership.model.Car;
+import com.dealership.model.Customer;
 import com.dealership.model.Employee;
 import com.dealership.util.DealershipArrayList;
 import com.dealership.util.DealershipList;
@@ -41,18 +42,13 @@ public class CarDaoImpl implements CarDao{
     }
 
     @Override
-    public Car findCarByName() {
-        return null;
-    }
-
-    @Override
     public boolean removeCar() {
         return false;
     }
 
     @Override
-    public DealershipList<Car> getAllCars() {
-        DealershipList<Car> cars = new DealershipArrayList<>();
+    public DealershipArrayList<Car> getAllCars() {
+        DealershipArrayList<Car> cars = new DealershipArrayList<>();
 
         try {
             connection = DAOUtilities.getConnection();
@@ -68,7 +64,7 @@ public class CarDaoImpl implements CarDao{
                 car.setMakeAndModel(rs.getString("makeAndModel"));
                 car.setYear(rs.getString("year"));
                 car.setPrice(rs.getDouble("price"));
-                cars.addCar(car);
+                cars.add(car);
             }
             rs.close();
         } catch (SQLException e) {
@@ -97,6 +93,7 @@ public class CarDaoImpl implements CarDao{
             while (rs.next()) {
                 car = new Car();
 
+                car.setCarId(rs.getInt("carId"));
                 car.setMakeAndModel(rs.getString("makeAndModel"));
                 car.setYear(rs.getString("year"));
                 car.setPrice(rs.getDouble("price"));
