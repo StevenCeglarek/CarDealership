@@ -1,5 +1,6 @@
 package com.dealership;
 
+import com.dealership.dao.CarDaoImpl;
 import com.dealership.dao.UserDaoImpl;
 import com.dealership.model.Car;
 import com.dealership.model.Employee;
@@ -15,7 +16,7 @@ public class Driver {
 
     public static final Scanner scan = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         RegisterMenu rm = new RegisterMenu();
         LoginMenu lm = new LoginMenu();
@@ -31,6 +32,10 @@ public class Driver {
                 lm.displayMenu(scan);
             }
         } while(continueLoop);
+
+//        Car car = new Car("Dodge Viper", "2021", 250000.00);
+//        CarDaoImpl cdi = new CarDaoImpl();
+//        cdi.addCar(car);
 
 //        UserDaoImpl usd = new UserDaoImpl();
 //

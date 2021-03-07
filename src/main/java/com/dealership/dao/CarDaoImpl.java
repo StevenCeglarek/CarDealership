@@ -1,66 +1,76 @@
 package com.dealership.dao;
 
+import com.dealership.jdbc.ConnectionSession;
 import com.dealership.model.Car;
-import com.dealership.model.Customer;
-import com.dealership.model.Employee;
 import com.dealership.util.DealershipArrayList;
-import com.dealership.util.DealershipList;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CarDaoImpl implements CarDao{
 
-    Connection connection = null;
-    PreparedStatement stmt = null;
     @Override
     public boolean addCar(Car car) {
-        try {
-            connection = DAOUtilities.getConnection();
-            String sql = "INSERT INTO cars(makeAndModel, year, price)" +
-                    "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO cars(makeAndModel, year, price)" +
+                "VALUES (?, ?, ?)";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
 
-            stmt = connection.prepareStatement(sql);
+            ps.setString(1, car.getMakeAndModel());
+            ps.setString(2, car.getYear());
+            ps.setDouble(3, car.getPrice());
 
-            stmt.setString(1, car.getMakeAndModel());
-            stmt.setString(2, car.getYear());
-            stmt.setDouble(3, car.getPrice());
-
-            if (stmt.executeUpdate() != 0) {
+            if (ps.executeUpdate() != 0) {
                 return true;
             } else {
                 return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeResources();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+//          finally {
+//            closeResources();
+//        }
         return false;
     }
 
     @Override
-    public boolean removeCar() {
-        return false;
+    public int removeCar(int carId) {
+        String sql = "DELETE FROM cars where carId = " + carId;
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
+
+            int i = ps.executeUpdate();
+            return i;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
     public DealershipArrayList<Car> getAllCars() {
         DealershipArrayList<Car> cars = new DealershipArrayList<>();
-
-        try {
-            connection = DAOUtilities.getConnection();
-            String sql = "SELECT * FROM cars";
-            stmt = connection.prepareStatement(sql);
-
-            ResultSet rs = stmt.executeQuery();
-
+        String sql = "SELECT * FROM cars WHERE NOT (customerId IS NOT NULL);";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
                 Car car = new Car();
 
+                car.setCarId(rs.getInt("carId"));
                 car.setMakeAndModel(rs.getString("makeAndModel"));
                 car.setYear(rs.getString("year"));
                 car.setPrice(rs.getDouble("price"));
@@ -69,27 +79,52 @@ public class CarDaoImpl implements CarDao{
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeResources();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return cars;
     }
 
     @Override
-    public Car findCarByCustomerId() {
-        return null;
+    public DealershipArrayList<Car> findCarsByCustomerId(int customerId) {
+        DealershipArrayList<Car> cars = new DealershipArrayList<>();
+        String sql = "SELECT * FROM cars WHERE (customerId = ?);";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
+            ps.setInt(1, customerId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Car car = new Car();
+
+                car.setCarId(rs.getInt("carId"));
+                car.setMakeAndModel(rs.getString("makeAndModel"));
+                car.setYear(rs.getString("year"));
+                car.setPrice(rs.getDouble("price"));
+                cars.add(car);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cars;
     }
 
     @Override
     public Car findByMakeAndModel(String makeAndModel) {
         Car car = null;
-        try {
-            connection = DAOUtilities.getConnection();
-            String sql = "SELECT * FROM cars WHERE makeandmodel LIKE ?";
-            stmt = connection.prepareStatement(sql);
-            stmt.setString(1, "%" + makeAndModel + "%");
+        String sql = "SELECT * FROM cars WHERE makeandmodel LIKE ?";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
+            ps.setString(1, "%" + makeAndModel + "%");
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 car = new Car();
 
@@ -102,26 +137,28 @@ public class CarDaoImpl implements CarDao{
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            closeResources();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return car;
     }
 
-    private void closeResources() {
-        try {
-            if (stmt != null)
-                stmt.close();
+    @Override
+    public int addCarToCustomer(int carId, int customerId) {
+        String sql = "UPDATE cars SET customerid = " + customerId + " WHERE carId = " + carId;
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
+            int i = ps.executeUpdate();
+//            System.out.println(i + " rows were updated");
+            return i;
+
         } catch (SQLException e) {
-            System.out.println("Could not close statement!");
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
-            if (connection != null)
-                connection.close();
-        } catch (SQLException e) {
-            System.out.println("Could not close connection!");
-            e.printStackTrace();
-        }
+        return -1;
     }
 }

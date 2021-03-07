@@ -12,35 +12,43 @@ public class CustomerMenu extends AbstractMenu {
     private Customer cust;
 
     @Override
-    public void displayMenu(Scanner scan) {
+    public void displayMenu(Scanner scan) throws Exception {
         CarService cs = new CarService();
-        System.out.println("Welcome " + cust.getUsername() + "Where would you like to be redirected?");
-        System.out.println("1. View all of the cars on the lot 2. Make an offer on a specific car " +
-                "3. View the cars that you currently own 4. View remaining payments on a specific car");
+        System.out.println("Welcome " + cust.getUsername() + " Where would you like to be redirected?");
+        System.out.println("1. View all of the cars on the lot and make an offer on a specific car " +
+                "2. View the cars that you currently own 3. View remaining payments on a specific car");
         String answer = scan.nextLine();
         boolean continueLoop = true;
         do {
             if (answer.equals("1")) {
                 System.out.println("Here are all of the cars currently on the lot");
                 System.out.println(cs.viewsCars());
-                displayMenu(scan);
-            } else if (answer.equals("2")) {
-                System.out.println("Please choose which car you would like to make an offer for");
-                String makeAndModel = scan.nextLine();
-                Car thisCar = cs.findCarByMakeAndModel(makeAndModel);
-                System.out.println("Do you wish to make an off on the " + thisCar.getYear() + " " + thisCar.getMakeAndModel() +
-                        " for " + thisCar.getPrice() + "? y/n");
+                System.out.println("Would you like to make an offer for a car on the lot? y/n");
                 String answer2 = scan.nextLine();
                 if (answer2.equals("y")) {
-                    System.out.println("How much would you like to offer for this vehicle?");
-                    Double offer = scan.nextDouble();
-                    cs.makeOffer(offer, cust.getCustomerId(), thisCar.getCarId());
-                    System.out.println("Your offer is now in the Queue, Please check back to see if it will be accepted.");
-                    continueLoop = false;
-                } else {
-                    System.out.println("Please take a look at the list again to specify the car you would like to place an offer on.");
+                    int carNum = 0;
+                    do {
+//                        TODO: Need to make a check if a customer has already placed an offer on a car for it to be removed from the list of cars
+                        System.out.println("Please specify which car you would like to put an offer on");
+                        String x = scan.nextLine();
+                        carNum = Integer.parseInt(x);
+                    } while(carNum > cs.viewsCars().size() || carNum < -1);
+                        Car thisCar = cs.viewsCars().get(carNum);
+                        System.out.println("How much would you like to offer for the " + thisCar.getYear() + " " + thisCar.getMakeAndModel() +
+                                " for " + thisCar.getPrice() + "?");
+                        String x = scan.nextLine();
+                        Double offer = Double.parseDouble(x);
+                        cs.makeOffer(offer, cust.getCustomerId(), thisCar.getCarId());
+                        System.out.println("Your offer is now in the Queue, Please check back to see if it will be accepted.");
+                        continueLoop = false;
+                } else if (answer2.equals("n")) {
+                    System.out.println("You will be redirected to the main menu.");
                     continueLoop = false;
                 }
+            } else if (answer.equals("2")) {
+                System.out.println("Here are the cars that you currently own from our dealership");
+                System.out.println(cs.viewsCarsByCustomerId(cust.getCustomerId()));
+                continueLoop = false;
             }
         } while (continueLoop);
     }

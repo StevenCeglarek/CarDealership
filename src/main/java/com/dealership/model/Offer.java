@@ -3,6 +3,8 @@ package com.dealership.model;
 
 public class Offer {
 
+    private int customerId;
+    private int carId;
     private double amountOffered;
 
     public Offer(double amountOffered) {
@@ -11,6 +13,21 @@ public class Offer {
 
     public Offer() {}
 
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public int getCarId() {
+        return carId;
+    }
+
+    public void setCarId(int carId) {
+        this.carId = carId;
+    }
 
     public double getAmountOffered() {
         return amountOffered;

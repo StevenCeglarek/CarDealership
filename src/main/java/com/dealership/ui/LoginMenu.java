@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class LoginMenu extends AbstractMenu{
 
-    public void displayMenu(Scanner scan) {
+    public void displayMenu(Scanner scan) throws Exception {
         UserService us = new UserService();
 
         System.out.println("Hello, are you logging in as a Employee or an Customer? 1. Employee, 2. Customer");

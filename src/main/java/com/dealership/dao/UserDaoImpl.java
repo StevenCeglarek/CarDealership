@@ -1,10 +1,10 @@
 package com.dealership.dao;
 
+import com.dealership.jdbc.ConnectionSession;
 import com.dealership.model.Customer;
 import com.dealership.model.Employee;
 import com.dealership.model.User;
 import com.dealership.util.DealershipArrayList;
-import com.dealership.util.DealershipList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,52 +17,54 @@ public class UserDaoImpl implements UserDao{
     PreparedStatement stmt = null;
     @Override
     public boolean addEmployee(Employee employee) {
-        try {
-            connection = DAOUtilities.getConnection();
-            String sql = "INSERT INTO employees(username, password, phoneNumber, email, isEmployee) " +
-                            "VALUES (?, ?, ?, ?, ?)";
-            stmt = connection.prepareStatement(sql);
+        String sql = "INSERT INTO employees(username, password, phoneNumber, email) " +
+                "VALUES (?, ?, ?, ?)";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+         {
 
-            stmt.setString(1, employee.getUsername());
-            stmt.setString(2, employee.getPassword());
-            stmt.setString(3, employee.getEmail());
-            stmt.setString(4, employee.getPhoneNumber());
-            stmt.setBoolean(5, employee.isEmployee());
-            if (stmt.executeUpdate() != 0)
+            ps.setString(1, employee.getUsername());
+            ps.setString(2, employee.getPassword());
+            ps.setString(3, employee.getEmail());
+            ps.setString(4, employee.getPhoneNumber());
+            if (ps.executeUpdate() != 0) {
                 return true;
-            else
+            } else {
                 return false;
-
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            closeResources();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return false;
     }
 
     public boolean addCustomer(Customer customer) {
-        try {
-            connection = DAOUtilities.getConnection();
-            String sql = "INSERT INTO customers(username, password, phoneNumber, email) " +
-                    "VALUES (?, ?, ?, ?)";
-            stmt = connection.prepareStatement(sql);
+        String sql = "INSERT INTO customers(username, password, phoneNumber, email) " +
+                "VALUES (?, ?, ?, ?)";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+         {
 
-            stmt.setString(1, customer.getUsername());
-            stmt.setString(2, customer.getPassword());
-            stmt.setString(3, customer.getEmail());
-            stmt.setString(4, customer.getPhoneNumber());
-            if (stmt.executeUpdate() != 0)
+            ps.setString(1, customer.getUsername());
+            ps.setString(2, customer.getPassword());
+            ps.setString(3, customer.getEmail());
+            ps.setString(4, customer.getPhoneNumber());
+            if (ps.executeUpdate() != 0)
                 return true;
             else
                 return false;
-
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            closeResources();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return false;
     }
 
     @Override
@@ -73,13 +75,14 @@ public class UserDaoImpl implements UserDao{
     @Override
     public Employee findEmployeeByUsername(String username) {
         Employee employee = null;
-        try {
-            connection = DAOUtilities.getConnection();
-            String sql = "SELECT * FROM employees WHERE username LIKE ?";
-            stmt = connection.prepareStatement(sql);
-            stmt.setString(1, "%" + username + "%");
+        String sql = "SELECT * FROM employees WHERE username LIKE ?";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+         {
+            ps.setString(1, "%" + username + "%");
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 employee = new Employee();
 
@@ -87,13 +90,12 @@ public class UserDaoImpl implements UserDao{
                 employee.setPassword(rs.getString("password"));
                 employee.setPhoneNumber(rs.getString("phoneNumber"));
                 employee.setEmail(rs.getString("email"));
-                employee.setEmployee(rs.getBoolean("isEmployee"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            closeResources();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return employee;
     }
@@ -101,13 +103,14 @@ public class UserDaoImpl implements UserDao{
     @Override
     public Customer findCustomerByUsername(String username) {
         Customer customer = null;
-        try {
-            connection = DAOUtilities.getConnection();
-            String sql = "SELECT * FROM customers WHERE username LIKE ?";
-            stmt = connection.prepareStatement(sql);
-            stmt.setString(1, "%" + username + "%");
+        String sql = "SELECT * FROM customers WHERE username LIKE ?";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
+            ps.setString(1, "%" + username + "%");
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 customer = new Customer();
 
@@ -120,32 +123,22 @@ public class UserDaoImpl implements UserDao{
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            closeResources();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return customer;
     }
 
     @Override
-    public Customer findCustomerById(Customer customer) {
-        return null;
-    }
-
-    @Override
-    public Customer findEmployeeById(Employee employee) {
-        return null;
-    }
-
-    @Override
     public DealershipArrayList<Employee> getAllEmployees() {
         DealershipArrayList<Employee> employees = new DealershipArrayList<>();
+        String sql = "SELECT * FROM employees";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
 
-        try {
-            connection = DAOUtilities.getConnection();
-            String sql = "SELECT * FROM employees";
-            stmt = connection.prepareStatement(sql);
-
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
 
             while (rs.next()) {
@@ -156,32 +149,25 @@ public class UserDaoImpl implements UserDao{
                 employee.setPassword(rs.getString("password"));
                 employee.setPhoneNumber(rs.getString("phoneNumber"));
                 employee.setEmail(rs.getString("email"));
-                employee.setEmployee(rs.getBoolean("isEmployee"));
-
                 employees.add(employee);
-
             }
-
             rs.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeResources();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return employees;
     }
 
     public DealershipArrayList<Customer> getAllCustomers() {
         DealershipArrayList<Customer> customers = new DealershipArrayList<>();
-
-        try {
-            connection = DAOUtilities.getConnection();
-            String sql = "SELECT * FROM employees";
-            stmt = connection.prepareStatement(sql);
-
-            ResultSet rs = stmt.executeQuery();
-
+        String sql = "SELECT * FROM customers";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
                 Customer customer = new Customer();
@@ -194,27 +180,10 @@ public class UserDaoImpl implements UserDao{
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeResources();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return customers;
-    }
-
-    private void closeResources() {
-        try {
-            if (stmt != null)
-                stmt.close();
-        } catch (SQLException e) {
-            System.out.println("Could not close statement!");
-            e.printStackTrace();
-        }
-        try {
-            if (connection != null)
-                connection.close();
-        } catch (SQLException e) {
-            System.out.println("Could not close connection!");
-            e.printStackTrace();
-        }
     }
 
 

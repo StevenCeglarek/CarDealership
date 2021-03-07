@@ -6,8 +6,9 @@ import com.dealership.util.DealershipArrayList;
 public interface CarDao {
 
     public boolean addCar(Car car);
-    public boolean removeCar();
-    public DealershipArrayList<Car> getAllCars();
-    public Car findCarByCustomerId();
+    public int removeCar(int carId);
+    public DealershipArrayList<Car> getAllCars() throws Exception;
+    public DealershipArrayList<Car> findCarsByCustomerId(int customerId);
     public Car findByMakeAndModel(String makeAndModel);
+    public int addCarToCustomer(int carId, int customerId);
 }
