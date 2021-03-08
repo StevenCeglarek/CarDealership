@@ -3,13 +3,16 @@ package com.dealership.ui;
 import com.dealership.dao.UserDaoImpl;
 import com.dealership.model.Car;
 import com.dealership.model.Customer;
+import com.dealership.model.Finances;
 import com.dealership.services.CarService;
+import com.dealership.util.DealershipArrayList;
 
 import java.util.Scanner;
 
 public class CustomerMenu extends AbstractMenu {
 
     private Customer cust;
+    private DealershipArrayList<Car> carList = new DealershipArrayList<>();
 
     @Override
     public void displayMenu(Scanner scan) throws Exception {
@@ -46,8 +49,20 @@ public class CustomerMenu extends AbstractMenu {
                     continueLoop = false;
                 }
             } else if (answer.equals("2")) {
-                System.out.println("Here are the cars that you currently own from our dealership");
-                System.out.println(cs.viewsCarsByCustomerId(cust.getCustomerId()));
+                int carNum = 0;
+                do  {
+                    System.out.println("Here are the cars that you currently own from our dealership");
+                    carList = cs.viewsCarsByCustomerId(cust.getCustomerId());
+                    System.out.println(carList);
+                    System.out.println("Choose a car to view your remaining balance on the car and to view your monthly payments");
+                    String i = scan.nextLine();
+                    carNum = Integer.parseInt(i);
+                } while (carNum > carList.size() || carNum < -1);
+                Finances finance = cs.viewFinancesById(cust.getCustomerId(), carList.get(carNum).getCarId());
+                System.out.println(finance);
+                continueLoop = false;
+            } else {
+                System.out.println("Please enter a valid number selection.");
                 continueLoop = false;
             }
         } while (continueLoop);

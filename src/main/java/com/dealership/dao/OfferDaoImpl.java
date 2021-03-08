@@ -39,14 +39,14 @@ public class OfferDaoImpl implements OfferDao{
     }
 
     @Override
-    public int removeOffer(int customerId, int carId) {
+    public int removeOffer(int carId, int customerId) {
         String sql = "DELETE FROM offer_cars where carId = " + carId + " and customerId = " + customerId;
         try(
                 ConnectionSession sess = new ConnectionSession();
-                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql))
         {
-
             int i = ps.executeUpdate();
+            System.out.println(i + " rows were updated");
             return i;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class OfferDaoImpl implements OfferDao{
         String sql = "DELETE FROM offer_cars where carId = " + carId;
         try(
                 ConnectionSession sess = new ConnectionSession();
-                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql))
         {
 
             int i = ps.executeUpdate();
@@ -80,7 +80,7 @@ public class OfferDaoImpl implements OfferDao{
         String sql = "SELECT * FROM offer_cars where carId = " + carId;
         try(
                 ConnectionSession sess = new ConnectionSession();
-                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql))
         {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

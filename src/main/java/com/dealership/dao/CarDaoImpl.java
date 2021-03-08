@@ -33,9 +33,6 @@ public class CarDaoImpl implements CarDao{
         } catch (Exception e) {
             e.printStackTrace();
         }
-//          finally {
-//            closeResources();
-//        }
         return false;
     }
 

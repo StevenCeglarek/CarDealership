@@ -1,9 +1,11 @@
 package com.dealership.services;
 
 import com.dealership.dao.CarDaoImpl;
+import com.dealership.dao.FinancesDaoImpl;
 import com.dealership.dao.OfferDaoImpl;
 import com.dealership.dao.UserDaoImpl;
 import com.dealership.model.Car;
+import com.dealership.model.Finances;
 import com.dealership.model.Offer;
 import com.dealership.util.DealershipArrayList;
 
@@ -16,14 +18,14 @@ public class CarService {
     CarDaoImpl cdi = new CarDaoImpl();
     OfferDaoImpl odi = new OfferDaoImpl();
     UserDaoImpl udi = new UserDaoImpl();
+    FinancesDaoImpl fdi = new FinancesDaoImpl();
 
-    public boolean addCar(String makeAndModel, String year, double price) {
+    public void addCar(String makeAndModel, String year, double price) {
         carList.add(new Car(makeAndModel, year, price));
         Car newCar = carList.get(currentCarIndex);
         currentCarIndex++;
         cdi.addCar(newCar);
 
-        return true;
     }
 
     public DealershipArrayList<Car> viewsCars(){
@@ -41,14 +43,12 @@ public class CarService {
         return car;
     }
 
-    public boolean makeOffer(double offerAmount, int customerId, int carId) {
+    public void makeOffer(double offerAmount, int customerId, int carId) {
         odi.addOffer(offerAmount, customerId, carId);
-        return true;
     }
 
-    public boolean removeCar(int carId) {
+    public void removeCar(int carId) {
         cdi.removeCar(carId);
-        return true;
     }
 
     public DealershipArrayList<Offer> getOffer(int carId) {
@@ -56,15 +56,25 @@ public class CarService {
         return offerlist;
     }
 
-    public boolean removeOffer(int carId, int customerId) {
+    public void removeOffer(int carId, int customerId) {
         odi.removeOffer(carId, customerId);
-        return true;
     }
 
-    public boolean acceptOffer(int carId, int customerId) {
-        odi.acceptOffer(carId);
-        cdi.addCarToCustomer(carId, customerId);
-        return true;
+    public void acceptOffer(Offer offer, Car car) {
+        odi.acceptOffer(offer.getCarId());
+        cdi.addCarToCustomer(offer.getCarId(), offer.getCustomerId());
+        double amountRemaining = car.getPrice() - offer.getAmountOffered();
+        double monthlyPayment = amountRemaining/60;
+        createFinancesPlan(offer.getCustomerId(), offer.getCarId(), amountRemaining, monthlyPayment, 0);
+    }
+
+    public void createFinancesPlan(int customerId, int carId, double amountRemaining, double monthlyPayment, int monthsPaid) {
+        fdi.newFinancePlan(customerId, carId, amountRemaining, monthlyPayment, monthsPaid);
+    }
+
+    public Finances viewFinancesById(int customerId, int carId) {
+        Finances finances = fdi.viewPlanByCustomerIdAndCarId(customerId, carId);
+        return finances;
     }
 
 

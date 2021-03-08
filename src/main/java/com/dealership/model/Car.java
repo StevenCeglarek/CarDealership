@@ -59,6 +59,6 @@ public class Car {
     }
 
     public String toString() {
-        return "Make and Model: " + getMakeAndModel() + " Year: " + getYear() + " Price: " + getPrice();
+        return "Make and Model: " + getMakeAndModel() + " Year: " + getYear() + " Purchase Price: " + getPrice();
     }
 }
