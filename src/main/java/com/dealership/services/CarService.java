@@ -13,7 +13,8 @@ public class CarService {
 
     public static DealershipArrayList<Car> carList = new DealershipArrayList<>();
     public DealershipArrayList<Car> theseCars = new DealershipArrayList<>();
-    DealershipArrayList<Offer> offerlist = new DealershipArrayList<>();
+    public DealershipArrayList<Offer> offerlist = new DealershipArrayList<>();
+    public DealershipArrayList<Finances> financeList = new DealershipArrayList<>();
     private static int currentCarIndex = 0;
     CarDaoImpl cdi = new CarDaoImpl();
     OfferDaoImpl odi = new OfferDaoImpl();
@@ -64,7 +65,7 @@ public class CarService {
         odi.acceptOffer(offer.getCarId());
         cdi.addCarToCustomer(offer.getCarId(), offer.getCustomerId());
         double amountRemaining = car.getPrice() - offer.getAmountOffered();
-        double monthlyPayment = amountRemaining/60;
+        double monthlyPayment = Math.round(amountRemaining/60*100)/100;
         createFinancesPlan(offer.getCustomerId(), offer.getCarId(), amountRemaining, monthlyPayment, 0);
     }
 
@@ -75,6 +76,19 @@ public class CarService {
     public Finances viewFinancesById(int customerId, int carId) {
         Finances finances = fdi.viewPlanByCustomerIdAndCarId(customerId, carId);
         return finances;
+    }
+
+    public Finances makePayment(Finances finances) {
+        finances.setAmountRemaining(Math.round(finances.getAmountRemaining()*100)/100 - Math.round(finances.getMonthlyPayment()*100)/100);
+        finances.setMonthsPaid(finances.getMonthsPaid() + 1);
+        fdi.payBill(finances.getAmountRemaining(), finances.getMonthsPaid(), finances.getCustomerId(), finances.getCarId());
+        fdi.viewPlanByCustomerIdAndCarId(finances.getCustomerId(), finances.getCarId());
+        return finances;
+    }
+
+    public DealershipArrayList<Finances> viewAllPlans(){
+        financeList = fdi.getAllPlans();
+        return financeList;
     }
 
 

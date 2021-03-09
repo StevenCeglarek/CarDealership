@@ -1,7 +1,9 @@
 package com.dealership.dao;
 
 import com.dealership.jdbc.ConnectionSession;
+import com.dealership.model.Car;
 import com.dealership.model.Finances;
+import com.dealership.util.DealershipArrayList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -64,8 +66,54 @@ public class FinancesDaoImpl implements FinancesDao{
     }
 
     @Override
-    public int payBill(double amountPaid) {
-        return 0;
+    public DealershipArrayList<Finances> getAllPlans() {
+        DealershipArrayList<Finances> finances = new DealershipArrayList<>();
+        String sql = "SELECT * FROM finance_plan";
+        try (
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Finances finance = new Finances();
+
+                finance.setCustomerId(rs.getInt("customerId"));
+                finance.setCarId(rs.getInt("carId"));
+                finance.setAmountRemaining(rs.getDouble("amountRemaining"));
+                finance.setMonthlyPayment(rs.getDouble("monthlyPayment"));
+                finance.setMonthsPaid(rs.getInt("monthsPaid"));
+
+                finances.add(finance);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return finances;
+    }
+
+    @Override
+    public int payBill(double newAmountRemaining, int newMonthsPaid, int customerId, int carId) {
+        Finances finances = null;
+
+        String sql = "UPDATE finance_plan SET amountRemaining = " + newAmountRemaining + ", monthsPaid = " + newMonthsPaid +
+                " WHERE customerId = " + customerId + " and carId = " + carId;
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
+            int i = ps.executeUpdate();
+            return i;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override

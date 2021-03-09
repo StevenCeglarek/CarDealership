@@ -4,6 +4,7 @@ import com.dealership.model.Car;
 import com.dealership.model.Employee;
 import com.dealership.model.Offer;
 import com.dealership.services.CarService;
+import com.dealership.services.UserService;
 import com.dealership.util.DealershipArrayList;
 
 import java.util.Scanner;
@@ -16,24 +17,35 @@ public class EmployeeMenu extends AbstractMenu{
 
 
     @Override
-    public void displayMenu(Scanner scan) {
+    public void displayMenu(Scanner scan) throws Exception {
         CarService cs = new CarService();
+        LoginMenu lm = new LoginMenu();
+        UserService us = new UserService();
+        if (emp == null) {
+            lm.displayMenu(scan);
+        }
         System.out.println("Welcome " + emp.getUsername() + ". Where would you like to be redirected?");
         System.out.println("1. Add Car to lot, 2. Remove a car from the lot, 3. View all the cars on the lot " +
-                "and view offers on a specific car 4. View all remaining payments on a car");
+                "and view offers on a specific car 4. View all payments on all purchase vehicles");
         String answer = scan.nextLine();
         boolean continueLoop2 = true;
         do {
             if (answer.equals("1")) {
-                System.out.println("Please enter the Make and Model of the car you want to add");
-                String makeAndModel = scan.nextLine();
-                System.out.println("Please enter the Year of the car");
-                String year = scan.nextLine();
-                System.out.println("Please give the price of the car");
-                Double price = scan.nextDouble();
-                cs.addCar(makeAndModel, year, price);
-                System.out.println("You have successfully added the " + year + " " + makeAndModel + " for $" + price);
-                continueLoop2 = false;
+                try {
+                    System.out.println("Please enter the Make and Model of the car you want to add");
+                    String makeAndModel = scan.nextLine();
+                    System.out.println("Please enter the Year of the car");
+                    String year = scan.nextLine();
+                    System.out.println("Please give the price of the car");
+                    String x = scan.nextLine();
+                    Double price = Double.parseDouble(x);
+                    cs.addCar(makeAndModel, year, price);
+                    System.out.println("You have successfully added the " + year + " " + makeAndModel + " for $" + price);
+                    continueLoop2 = false;
+                    lm.displayMenu(scan);
+                } catch (NumberFormatException e) {
+                    System.out.println("You have made an invalid entry. Please try again.");
+                }
             } else if (answer.equals("2")){
                 int carNum = 0;
                 do  {
@@ -63,8 +75,8 @@ public class EmployeeMenu extends AbstractMenu{
                 if (offerList.size() == 0) {
                     System.out.println("The " + car.getYear() + " " + car.getMakeAndModel() + " currently has no offers placed on it");
                     continueLoop2 = false;
+                    lm.displayMenu(scan);
                 } else {
-//                TODO: Make a check for if there are no offers on the car
                     System.out.println("The current offer(s) for the " + car.getYear() + " " + car.getMakeAndModel() +
                             " are for " + offerList.toString());
                     System.out.println("Please specify which offer you would like to modify.");
@@ -78,20 +90,31 @@ public class EmployeeMenu extends AbstractMenu{
                         System.out.println("The offer has been accepted and all other offers on this vehicle are now considered rejected.");
                         cs.acceptOffer(offer, car);
                         continueLoop2 = false;
+                        emp = null;
+                        lm.displayMenu(scan);
                     } else if (aOrR.equals("reject")) {
                         System.out.println("The offer has been rejected and a message has been sent to the Customer who made the offer.");
                         System.out.println(offer.getCarId());
                         System.out.println(offer.getCustomerId());
                         cs.removeOffer(offer.getCarId(), offer.getCustomerId());
                         continueLoop2 = false;
+                        emp = null;
+                        lm.displayMenu(scan);
                     } else {
                         System.out.println("Sorry, you entered the wrong command, please try again");
+                        emp = null;
+                        continueLoop2 = false;
                     }
                 }
             } else if (answer.equals("4")) {
-
+//                TODO: Figure out how to show all of the Owner's information
+                System.out.println("Here is a list of all the cars and their finance plans");
+                System.out.println(cs.viewAllPlans());
+                continueLoop2 = false;
             } else {
                 System.out.println("Sorry, you entered the wrong command, please try again");
+                emp = null;
+                continueLoop2 = false;
             }
         } while (continueLoop2);
 

@@ -23,11 +23,12 @@ public class LoginMenu extends AbstractMenu{
                 Employee emp = us.findUserByUsernameEmployee(username);
                 if(emp == null || !emp.getPassword().equals(password)) {
                     System.out.println("Login Failed");
+                    continueLoop = false;
                 } else
                     System.out.println("You will now be redirected to the Employee Menu.");
                     EmployeeMenu empm = new EmployeeMenu(emp);
                     empm.displayMenu(scan);
-                continueLoop = false;
+                    continueLoop = false;
             } else if (EC.equals("2")) {
                 System.out.println("Welcome, Please enter username: ");
                 String username = scan.nextLine();
@@ -36,6 +37,7 @@ public class LoginMenu extends AbstractMenu{
                 Customer cust = us.findUserByUsernameCustomer(username);
                 if(cust == null || !cust.getPassword().equals(password)) {
                     System.out.println("Login Failed");
+                    continueLoop = false;
                 } else
                     System.out.println("You will now be redirected to the Customer Menu.");
                     CustomerMenu cm = new CustomerMenu(cust);

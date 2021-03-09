@@ -23,7 +23,7 @@ public class CarDaoImpl implements CarDao{
             ps.setString(2, car.getYear());
             ps.setDouble(3, car.getPrice());
 
-            if (ps.executeUpdate() != 0) {
+            if (ps. executeUpdate() != 0) {
                 return true;
             } else {
                 return false;
