@@ -88,7 +88,7 @@ public class CustomerMenu extends AbstractMenu {
                     finance = cs.makePayment(finance);
                     System.out.println("You have now made a payment of $" + finance.getMonthlyPayment());
                     System.out.println("and you have now paid " + finance.getMonthsPaid() + " month(s)");
-                    System.out.println(" and your end balances is now $" + finance.getAmountRemaining());
+                    System.out.println("and your end balances is now $" + finance.getAmountRemaining());
                     continueLoop = false;
                     rm.displayMenu(scan);
                 } else {

@@ -97,7 +97,7 @@ public class DealershipArrayList<T> extends DealershipList<T> {
     public String[] getStringArray(){
         String[] result = new String[array.length];
         for (int i = 0; i < array.length; i++){
-            result[i] = i + "." + array[i].toString();
+            result[i] = i + ". " + array[i].toString();
         }
         return result;
     }

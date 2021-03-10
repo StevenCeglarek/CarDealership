@@ -2,6 +2,9 @@ package com.dealership.dao;
 
 import com.dealership.jdbc.ConnectionSession;
 import com.dealership.model.Car;
+import com.dealership.model.CarPlanCustomer;
+import com.dealership.model.Customer;
+import com.dealership.model.Finances;
 import com.dealership.util.DealershipArrayList;
 import com.enterprise.annotations.TestClass;
 import com.enterprise.annotations.TestMethod;
@@ -10,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class CarDaoImpl implements CarDao{
 
@@ -212,5 +216,39 @@ public class CarDaoImpl implements CarDao{
         }
         return car.getMakeAndModel();
 
+    }
+
+    @Override
+    public DealershipArrayList<CarPlanCustomer> findPlansWithCarInfo() {
+        DealershipArrayList<CarPlanCustomer> cpcList = new DealershipArrayList<>();
+        CarPlanCustomer cpc = null;
+
+        String sql = "select c.customerid, c.username, c2.makeandmodel , c2.year , fp.amountremaining , fp.monthlypayment , fp.monthspaid " +
+                "from cardealership.customers c, cardealership.cars c2 , cardealership.finance_plan fp " +
+                "where c.customerid = fp.customerid and fp.carid = c2.carid ;";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cpc = new CarPlanCustomer();
+                cpc.setMakeAndModel(rs.getString("makeAndModel"));
+                cpc.setYear(rs.getString("year"));
+                cpc.setUsername(rs.getString("username"));
+                cpc.setAmountRemaining(rs.getDouble("amountRemaining"));
+                cpc.setMonthsPaid(rs.getInt("monthsPaid"));
+                cpc.setMonthlyPayment(rs.getDouble("monthlyPayment"));
+
+                cpcList.add(cpc);
+
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cpcList;
     }
 }

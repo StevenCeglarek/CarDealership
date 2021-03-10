@@ -33,6 +33,7 @@ public class EmployeeMenu extends AbstractMenu{
         System.out.println("2. Remove a car from the lot");
         System.out.println("3. View all the cars on the lot and view offers on a specific car ");
         System.out.println("4. View all payments on all purchase vehicles");
+        System.out.println("5. Logout");
         System.out.println("------------------------------------------------------------------");
         String answer = scan.nextLine();
         boolean continueLoop2 = true;
@@ -120,7 +121,7 @@ public class EmployeeMenu extends AbstractMenu{
                     rm.displayMenu(scan);
                 }
                 System.out.println("Here is a list of all the cars and their finance plans");
-                System.out.println(cs.viewAllPlans());
+                System.out.println(cs.findPlansWithCarInfo() + "\n---------------------------------------------");
                 continueLoop2 = false;
                 rm.displayMenu(scan);
             } else if (answer.equals("5")) {

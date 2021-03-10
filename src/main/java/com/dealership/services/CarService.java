@@ -5,6 +5,7 @@ import com.dealership.dao.FinancesDaoImpl;
 import com.dealership.dao.OfferDaoImpl;
 import com.dealership.dao.UserDaoImpl;
 import com.dealership.model.Car;
+import com.dealership.model.CarPlanCustomer;
 import com.dealership.model.Finances;
 import com.dealership.model.Offer;
 import com.dealership.util.DealershipArrayList;
@@ -99,6 +100,12 @@ public class CarService {
     public DealershipArrayList<Finances> viewAllPlans(){
         financeList = fdi.getAllPlans();
         return financeList;
+    }
+
+    public DealershipArrayList<CarPlanCustomer> findPlansWithCarInfo(){
+        DealershipArrayList<CarPlanCustomer> cpcList;
+        cpcList = cdi.findPlansWithCarInfo();
+        return cpcList;
     }
 
 
