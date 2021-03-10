@@ -18,13 +18,17 @@ public class CustomerMenu extends AbstractMenu {
     public void displayMenu(Scanner scan) throws Exception {
         CarService cs = new CarService();
         UserService us = new UserService();
+        LoginMenu lm = new LoginMenu();
+        RedirectingMenuCust rm = new RedirectingMenuCust(cust);
         if (cust == null) {
-            LoginMenu lm = new LoginMenu();
             lm.displayMenu(scan);
         }
-        System.out.println("Welcome " + cust.getUsername() + " Where would you like to be redirected?");
-        System.out.println("1. View all of the cars on the lot and make an offer on a specific car " +
-                "2. View the cars that you currently own and check the balance and/or make a payment");
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("Welcome " + cust.getUsername() + ".");
+        System.out.println("1. View all of the cars on the lot and make an offer on a specific car ");
+        System.out.println("2. View the cars that you currently own and check the balance and/or make a payment");
+        System.out.println("3. Logout");
+        System.out.println("------------------------------------------------------------------");
         String answer = scan.nextLine();
         boolean continueLoop = true;
         do {
@@ -47,23 +51,30 @@ public class CustomerMenu extends AbstractMenu {
                                 " for " + thisCar.getPrice() + "?");
                         String x = scan.nextLine();
                         Double offer = Double.parseDouble(x);
-                        cs.makeOffer(offer, cust.getCustomerId(), thisCar.getCarId());
-                        System.out.println("Your offer is now in the Queue, Please check back to see if it will be accepted.");
+                        String str = cs.makeOffer(offer, cust.getCustomerId(), thisCar.getCarId());
+                        System.out.println(str);
                         continueLoop = false;
                         cust = null;
+                        rm.displayMenu(scan);
                     } else if (answer2.equals("n")) {
                         System.out.println("You will be redirected to the main menu.");
                         continueLoop = false;
                         cust = null;
+                        rm.displayMenu(scan);
                     }
                 } catch(NumberFormatException e) {
                     System.out.println("You have made an invalid entry. Please try again.");
                 }
             } else if (answer.equals("2")) {
+                carList = cs.viewsCarsByCustomerId(cust.getCustomerId());
+                if (carList.size() == 0) {
+                    System.out.println("You currently don't own any vehicles. You will be redirected back to main menu.");
+                    continueLoop = false;
+                    rm.displayMenu(scan);
+                }
                 int carNum = 0;
                 do  {
                     System.out.println("Here are the cars that you currently own from our dealership");
-                    carList = cs.viewsCarsByCustomerId(cust.getCustomerId());
                     System.out.println(carList);
                     System.out.println("Choose a car to view your remaining balance on the car and to view your monthly payments");
                     String i = scan.nextLine();
@@ -75,15 +86,26 @@ public class CustomerMenu extends AbstractMenu {
                 String makePayment = scan.nextLine();
                 if (makePayment.equals(("y"))) {
                     finance = cs.makePayment(finance);
-                    System.out.println("You have now made a payment of $" + finance.getMonthlyPayment() +
-                            " and you have now paid " + finance.getMonthsPaid() + " month(s) and your end balances is now $" +
-                            finance.getAmountRemaining());
+                    System.out.println("You have now made a payment of $" + finance.getMonthlyPayment());
+                    System.out.println("and you have now paid " + finance.getMonthsPaid() + " month(s)");
+                    System.out.println(" and your end balances is now $" + finance.getAmountRemaining());
+                    continueLoop = false;
+                    rm.displayMenu(scan);
+                } else {
+                    System.out.println("You will now be redirected back to the main menu");
+                    continueLoop = false;
+                    rm.displayMenu(scan);
                 }
+            } else if(answer.equals("3")) {
+                System.out.println("You will now be logged out. Thank you for visiting the Car Dealership");
+                cust = null;
+                lm.displayMenu(scan);
                 continueLoop = false;
-            } else {
+            }
+            else {
                 System.out.println("Please enter a valid number selection.");
                 continueLoop = false;
-                cust = null;
+                rm.displayMenu(scan);
             }
         } while (continueLoop);
     }
@@ -91,6 +113,4 @@ public class CustomerMenu extends AbstractMenu {
     public CustomerMenu(Customer cust) {
         this.cust = cust;
     }
-
-    public CustomerMenu() {}
 }

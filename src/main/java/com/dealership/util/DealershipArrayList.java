@@ -65,7 +65,7 @@ public class DealershipArrayList<T> extends DealershipList<T> {
         return false;
     }
 
-    protected void clear() {
+    public void clear() {
         for (int i = 0; i < array.length; i++) {
             array[i] = null;
         }

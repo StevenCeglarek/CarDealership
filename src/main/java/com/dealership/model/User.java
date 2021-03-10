@@ -1,5 +1,6 @@
 package com.dealership.model;
 
+
 import java.util.List;
 
 public class User {

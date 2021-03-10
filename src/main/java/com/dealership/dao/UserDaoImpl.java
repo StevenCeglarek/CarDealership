@@ -129,62 +129,6 @@ public class UserDaoImpl implements UserDao{
         return customer;
     }
 
-    @Override
-    public DealershipArrayList<Employee> getAllEmployees() {
-        DealershipArrayList<Employee> employees = new DealershipArrayList<>();
-        String sql = "SELECT * FROM employees";
-        try(
-                ConnectionSession sess = new ConnectionSession();
-                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
-        {
-
-            ResultSet rs = ps.executeQuery();
-
-
-            while (rs.next()) {
-
-                Employee employee = new Employee();
-
-                employee.setUsername(rs.getString("username"));
-                employee.setPassword(rs.getString("password"));
-                employee.setPhoneNumber(rs.getString("phoneNumber"));
-                employee.setEmail(rs.getString("email"));
-                employees.add(employee);
-            }
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return employees;
-    }
-
-    public DealershipArrayList<Customer> getAllCustomers() {
-        DealershipArrayList<Customer> customers = new DealershipArrayList<>();
-        String sql = "SELECT * FROM customers";
-        try(
-                ConnectionSession sess = new ConnectionSession();
-                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
-        {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Customer customer = new Customer();
-                customer.setUsername(rs.getString("username"));
-                customer.setPassword(rs.getString("password"));
-                customer.setPhoneNumber(rs.getString("phoneNumber"));
-                customer.setEmail(rs.getString("email"));
-                customers.add(customer);
-            }
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return customers;
-    }
 
 
 }

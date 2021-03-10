@@ -13,6 +13,4 @@ public interface UserDao {
     public boolean updateUser(User user);
     public Employee findEmployeeByUsername(String username);
     public Customer findCustomerByUsername(String username);
-    public DealershipArrayList<Employee> getAllEmployees();
-    public DealershipArrayList<Customer> getAllCustomers();
 }

@@ -46,7 +46,6 @@ public class OfferDaoImpl implements OfferDao{
                 PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql))
         {
             int i = ps.executeUpdate();
-            System.out.println(i + " rows were updated");
             return i;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,5 +96,33 @@ public class OfferDaoImpl implements OfferDao{
             e.printStackTrace();
         }
         return offers;
+    }
+
+    @Override
+    public int offerByCarIdAndCustomerId(int customerId, int carId) {
+        Offer offer = null;
+        String sql = "select * from offer_cars oc where (oc.customerid = " + customerId + " and oc.carid = " + carId + ")" ;
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql))
+        {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                offer = new Offer();
+                offer.setCarId(rs.getInt("carId"));
+                offer.setCustomerId(rs.getInt("customerId"));
+                offer.setAmountOffered(rs.getDouble("amountOffered"));
+            }
+            if (offer == null) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

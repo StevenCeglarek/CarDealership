@@ -11,4 +11,6 @@ public interface CarDao {
     public DealershipArrayList<Car> findCarsByCustomerId(int customerId);
     public Car findByMakeAndModel(String makeAndModel);
     public int addCarToCustomer(int carId, int customerId);
+    public String getFirstCarsMake();
+    public DealershipArrayList<Car> findCarsByCustomerIdOf1();
 }

@@ -33,34 +33,6 @@ public class Driver {
             }
         } while(continueLoop);
 
-//        Car car = new Car("Dodge Viper", "2021", 250000.00);
-//        CarDaoImpl cdi = new CarDaoImpl();
-//        cdi.addCar(car);
-
-//        UserDaoImpl usd = new UserDaoImpl();
-//
-//        System.out.println(usd.getAllEmployees().toString());
-
-//        DealershipArrayList<Car> carList = new DealershipArrayList<>();
-//        carList.addCar(new Car("Honda Civic", "2021", 30000.00));
-//        carList.addCar(new Car("Honda Accord", "2021", 35000.00));
-//        carList.addCar(new Car("Honda Civic Type R", "2021", 49000.00));
-//        DealershipArrayList<User> userList = new DealershipArrayList<>();
-//        userList.addUser(new Employee("Steven", "123456", "1234567", "123@123.com"));
-//        userList.addUser(new Employee("bob", "123456", "1234567", "123@123.com"));
-//        userList.addUser(new Employee("james", "123456", "1234567", "123@123.com"));
-//
-//        carList.removeCar((Car) carList.get(0));
-//
-//        userList.removeUser((User) userList.get(0));
-//
-//        System.out.println(carList.get(0));
-//        System.out.println(carList.get(1));
-//        System.out.println(userList.get(0));
-//        System.out.println(userList.get(1));
-
-
-
 
     }
 }

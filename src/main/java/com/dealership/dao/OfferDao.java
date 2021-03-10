@@ -10,4 +10,5 @@ public interface OfferDao {
     public int removeOffer(int customerId, int carId);
     public int acceptOffer(int carId);
     public DealershipArrayList<Offer> viewOffersByCarId(int carId);
+    public int offerByCarIdAndCustomerId(int customerId, int carId);
 }

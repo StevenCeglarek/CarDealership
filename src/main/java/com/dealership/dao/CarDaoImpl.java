@@ -3,7 +3,10 @@ package com.dealership.dao;
 import com.dealership.jdbc.ConnectionSession;
 import com.dealership.model.Car;
 import com.dealership.util.DealershipArrayList;
+import com.enterprise.annotations.TestClass;
+import com.enterprise.annotations.TestMethod;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,7 +60,7 @@ public class CarDaoImpl implements CarDao{
     @Override
     public DealershipArrayList<Car> getAllCars() {
         DealershipArrayList<Car> cars = new DealershipArrayList<>();
-        String sql = "SELECT * FROM cars WHERE NOT (customerId IS NOT NULL);";
+        String sql = "select * from get_all_cars();";
         try(
                 ConnectionSession sess = new ConnectionSession();
                 PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
@@ -91,6 +94,34 @@ public class CarDaoImpl implements CarDao{
                 PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
         {
             ps.setInt(1, customerId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Car car = new Car();
+
+                car.setCarId(rs.getInt("carId"));
+                car.setMakeAndModel(rs.getString("makeAndModel"));
+                car.setYear(rs.getString("year"));
+                car.setPrice(rs.getDouble("price"));
+                cars.add(car);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cars;
+    }
+
+    @Override
+    public DealershipArrayList<Car> findCarsByCustomerIdOf1() {
+        DealershipArrayList<Car> cars = new DealershipArrayList<>();
+        String sql = "select * from get_all_cars_by_customer();";
+        try(
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql);)
+        {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
@@ -157,5 +188,29 @@ public class CarDaoImpl implements CarDao{
             e.printStackTrace();
         }
         return -1;
+    }
+
+
+    public String getFirstCarsMake() {
+        Car car = null;
+        String sql = "SELECT * FROM cars WHERE carId = 2";
+        try (
+                ConnectionSession sess = new ConnectionSession();
+                PreparedStatement ps = sess.getActiveConnection().prepareStatement(sql)
+        ) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                car = new Car();
+
+                car.setMakeAndModel(rs.getString("makeAndModel"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return car.getMakeAndModel();
+
     }
 }

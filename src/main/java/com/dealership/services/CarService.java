@@ -44,8 +44,17 @@ public class CarService {
         return car;
     }
 
-    public void makeOffer(double offerAmount, int customerId, int carId) {
-        odi.addOffer(offerAmount, customerId, carId);
+    public String makeOffer(double offerAmount, int customerId, int carId) {
+        int i = 0;
+        String str = "";
+        i = odi.offerByCarIdAndCustomerId(customerId, carId);
+        if (i == -1) {
+            str = "You have already made an offer on this car!";
+        } else {
+            odi.addOffer(offerAmount, customerId, carId);
+            str = "Your offer is now in the Queue, Please check back to see if it will be accepted.";
+        }
+        return str;
     }
 
     public void removeCar(int carId) {
@@ -54,6 +63,7 @@ public class CarService {
 
     public DealershipArrayList<Offer> getOffer(int carId) {
         offerlist = odi.viewOffersByCarId(carId);
+
         return offerlist;
     }
 
